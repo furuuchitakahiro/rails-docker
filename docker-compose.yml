@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build: ./app
+    ports:
+      - "8000:8000"
+    links:
+      - db:db
+    volumes:
+      - "./app:/usr/src/app"
+    command: sh utils/startapp.dev.sh
+    tty: true
+    stdin_open: true
+  db:
+    build: ./db
+    expose:
+      - "5432"
+    volumes:
+      - "./db/datadir:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: "dev_rails_user"
+      POSTGRES_PASSWORD: "dev_rails_password"
+      POSTGRES_DB: "dev_rails_db"
